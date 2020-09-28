@@ -1,0 +1,10 @@
+{
+    "name": "Opdracht 1",
+    "introText": "Vragen over ons koningshuis",
+    "questions": [
+    {
+      "questionId": 1,
+        "question": "Wat is de politieke vorm van Nederland",
+        "questionType": "multiple_choice"
+    }]
+}

@@ -1,0 +1,58 @@
+<div id="main" *ngFor="let question of _question">
+    <div class="container" *ngIf="!_finished">
+      <section id="one">
+      <header>
+    <h2>{{question.name}}</h2>
+    <p>{{question.introText}}</p>
+  </header>  
+  </section>
+    <div>
+      <div *ngIf="!_Started">
+        <button (click)="StartQuiz()">Start!</button>
+      </div>
+      <form class="container" [formGroup]="questionForm" (ngSubmit)="nextQuestion(_currentQuestionType)">
+        <div *ngIf="_Started">
+              <div *ngFor="let questions of question.questions">
+                <div *ngIf="getQuestionid(questions.questionId)">
+                  vraag {{_CurrentQuestion}}<br>
+                  {{questions.question}}
+                  <div *ngIf="getQuestionType(questions.questionType); else openAnswer">
+                    <div *ngFor="let answer of questions.answers">
+                        <div class="radio" *ngIf="checkForgivenAnswer(answer.answerId, questions.questionId); else noAnswer">
+                          <input class="form-check-input" type ="radio" value="{{answer.answerId}}" formControlName="{{questions.questionId}}" [(ngModel)]="answers[_CurrentQuestion]" [value]="answer.answer" >
+                          {{answer.answer}}
+                        </div>
+                        <ng-template #noAnswer>
+                        <input type ="radio" value="{{answer.answer}}" formControlName="{{questions.questionId}}">
+                        {{answer.answer}}
+                      </ng-template>
+                    </div>
+                  </div>
+                  <ng-template #openAnswer>
+                    <input type="text"  formControlName="{{questions.questionId}}">
+                    
+                  </ng-template>
+                </div>
+              </div>
+              <div *ngIf="_CurrentQuestion <5; else Submit">
+              <button type="submit">Volgende vraag</button> <button type="button" (click)="previousQuestion()">Vorige vraag</button>
+            </div>
+            <ng-template #Submit>
+              <button type="submit" (click)="submitQuiz()" >Submit</button> <button type="button" (click)="previousQuestion()">Vorige vraag</button>
+            </ng-template>
+  
+            </div>
+      </form>
+    </div>
+    </div>
+    <div *ngIf="_finished">
+      <h1>Dit is de uitslag van de quiz!</h1>
+      <p>Vraag 1: Jou antwoord was: {{answers[1]}} deze vraag is {{q1}}</p>
+      <p>Vraag 2: Jou antwoord was: {{answers[2]}}</p>
+      <p>Vraag 3: Jou antwoord was: {{answers[3]}}</p>
+      <p>Vraag 4: Jou antwoord was: {{answers[4]}} deze vraag is {{q2}}</p>
+      <p>Vraag 5: Jou antwoord was: {{answers[5]}}</p>
+      <button (click)="restartQuiz()" >Restart de Quiz</button>
+    </div>
+  </div>
+  
